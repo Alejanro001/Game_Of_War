@@ -1,4 +1,4 @@
-const suit = ['hearts', 'spades', 'clubs', 'diamonds']
+const suit = ['Hearts', 'Spades', 'Clubs', 'Diamonds']
 const cardValues = [
     [2, 2],
     [3, 3],
@@ -24,12 +24,12 @@ class Card {
     }
 }
 class Deck {
-    constructor(length, cards = []) {
-        this.length = length,
-            this.cards = cards
+    constructor(cards = [], length) {
+        this.cards = cards
+        this.length = length
     }
     drawCard() {
-        return this.cards[Math.floor(Math.random() * this.length)]
+        return this.cards[Math.floor(Math.random() * this.cards.length)]
     }
 
 }
@@ -40,97 +40,118 @@ class Player {
         this.hasCards = hasCards
     }
 }
-const cardsInDeck = []
-//creating all of the cards and placing them in the deck
-for (let i = 0; i < suit.length; i++) {
-    for (let j = 0; j < cardValues.length; j++) {
-        let card = new Card(suit[i],
-            cardValues[j][0],
-            cardValues[j][1],
-            `The ${cardValues[j][0]} of ${suit[i]}`)
-        cardsInDeck.push(card)
+function populateDeck(deck) {
+    for (let i = 0; i < suit.length; i++) {
+        for (let j = 0; j < cardValues.length; j++) {
+            let card = new Card(suit[i],
+                cardValues[j][0],
+                cardValues[j][1],
+                `The ${cardValues[j][0]} of ${suit[i]}`)
+            deck.cards.push(card)
+            //deck.length++
+        }
+    }
+}
+function deal(player) {
+    for (let j = 1; j <= 26; j++) {
+        let cardToStack = deck.drawCard()
+        //console.log(cardToStack)
+        player.stack.push(cardToStack)
+        for (let i = 0; i < cardsInDeck.length; i++) {
+            if (cardToStack.suit == cardsInDeck[i].suit && cardToStack.score == cardsInDeck[i].score) {
+                cardsInDeck.splice(i, 1)
+                //deck.length--
+            }
+        }
     }
 }
 
-//now we have a deck full of cards
-const deck = new Deck(cardsInDeck.length, cardsInDeck)
-console.log(cardsInDeck.length)
-//the method from the deck class for drawing a random card is working
-// let x = deck.drawCard()
-// console.log(x)
 
-brandonStack = []; kendrickStack = []
+const cardsInDeck = []
+const brandonStack = []
+const kendrickStack = []
 const brandon = new Player('Brandon', brandonStack, true)
 const kendrick = new Player('Kendrick', kendrickStack, true)
+const deck = new Deck(cardsInDeck, cardsInDeck.length)
+//console.log(deck)
 
-
-// while (deck.cardsInDeck.length <= 26) {
-//     let cardToStack = deck.drawCard()
-//     console.log(cardToStack)
-//     brandon.stack.push(cardToStack)
-//     for (let i = 0; i < cardsInDeck.length; i++) {
-//         if (cardToStack.suit == cardsInDeck[i].suit && cardToStack.score == cardsInDeck[i].score) {
-//             cardsInDeck.splice(i, 1)
-//         }s
-//     }
-// }
-console.log(cardsInDeck)
-// function deal(player) {
-    
-//     for(let j = 1; j <= 26; j++) {
-//         let cardToStack = deck.drawCard()
-//         console.log(cardToStack)
-//         player.stack.push(cardToStack)
-//         for (let i = 0; i < cardsInDeck.length; i++) {
-//             if (cardToStack.suit == cardsInDeck[i].suit && cardToStack.score == cardsInDeck[i].score) {
-//                 cardsInDeck.splice(i, 1)
-//                 console.log(cardsInDeck.length)
-//             }
-//         }        
-//     }
-// }
-
-for(let j = 1; j <= 26; j++) {
-    let cardToStack = deck.drawCard()
-    console.log(cardToStack)
-    brandon.stack.push(cardToStack)
-    for (let i = 0; i < cardsInDeck.length; i++) {
-        if (cardToStack.suit == cardsInDeck[i].suit && cardToStack.score == cardsInDeck[i].score) {
-            cardsInDeck.splice(i, 1)
-            console.log(cardsInDeck.length)
-            //console.log(Math.floor(Math.random)*cardsInDeck.length)
-            console.log(cardsInDeck)
-            console.log(deck)
-            deck.length--
-        }
-    }        
-}
-for(let j = 1; j <= 26; j++) {
-    let cardToStack = deck.drawCard()
-    console.log(cardToStack)
-    kendrick.stack.push(cardToStack)
-    for (let i = 0; i < cardsInDeck.length; i++) {
-        if (cardToStack.suit == cardsInDeck[i].suit && cardToStack.score == cardsInDeck[i].score) {
-            cardsInDeck.splice(i, 1)
-            console.log(cardsInDeck.length)
-            //console.log(Math.floor(Math.random)*cardsInDeck.length)
-            //console.log(cardsInDeck)
-            //console.log(deck)
-            deck.length--
-        }
-    }        
-}
-console.log(brandon.stack)
-console.log(kendrick.stack)
-
-//deck.cardsInDeck.splice(cardToStack, 1)
-//console.log(deck.cardsInDeck)
+// populateDeck(deck)
+// deal(brandon)
+// deal(kendrick)
+// populateDeck(deck)
+//console.log(deck)
 
 
 
+// console.log(brandon.stack)
+// console.log(kendrick.stack)
 
-console.log(cardsInDeck.length)
 // syntax for removing a specific element from an array
 // let array = [0,1,2,3,4,5,6]
 // array.splice(3,1)
 // console.log(array)
+
+function gameOfWar(player_1, player_2) {
+    populateDeck(deck)
+    deal(player_1)
+    deal(player_2)
+    let gameOver = false
+    alert(`Let the game begin!!!`)
+    while (!gameOver) {
+        let p1TopCard = player_1.stack[0]
+        let p2TopCard = player_2.stack[0]
+        player_1.stack.shift()
+        player_2.stack.shift()
+        alert(`${player_1.name} has ${p1TopCard.name}. ${player_2.name} has ${p2TopCard.name}`)
+        if (p1TopCard.score > p2TopCard.score) {
+            player_1.stack.push(p1TopCard, p2TopCard)
+            alert(`${player_1.name} wins this round!`)
+            alert(`The score is: ${player_1.name} has ${player_1.stack.length} card(s) and ${player_2.name} has ${player_2.stack.length} card(s)`)
+            if (player_2.stack.length == 0) { gameOver = true }
+        } else if (p2TopCard.score > p1TopCard.score) {
+            player_2.stack.push(p1TopCard, p2TopCard)
+            alert(`${player_2.name} wins this round!`)
+            alert(`The score is: ${player_1.name} has ${player_1.stack.length} card(s) and ${player_2.name} has ${player_2.stack.length} card(s)`)
+            if (player_1.stack.length == 0) { gameOver = true }
+        } else {
+            alert('WAR!')
+            // gameOver = true
+            let war = true
+            let prize = []
+            while (war) {
+                let p1hidden = player_1.stack[0] //gets a facedown card from player 1
+                prize.push(p1hidden) //puts that card in a new array
+                player_1.stack.shift()//removes that card from their stack
+                let p2hidden = player_2.stack[0]//repeats for player 2
+                prize.push(p2hidden)
+                player_1.stack.shift()
+                let p1WarCard = player_1.stack[0]//gets player 1's war card
+                prize.push(p1WarCard)//puts it in the prize array
+                player_1.stack.shift()//removes it from their stack
+                let p2WarCard = player_2.stack[0]//repeats for player 2
+                prize.push(p2WarCard)
+                player_1.stack.shift()
+                if (p1WarCard.score > p2WarCard.score) {
+                    //p1 wins war
+                    for (i = 0; i < prize.length; i++) {
+                        player_1.stack.push(prize[i])
+                        if (player_2.stack.length == 0) { gameOver = true }
+                    }
+                    war = false
+                } else if (p2WarCard.score > p1WarCard.score) {
+                    //p2 wins war
+                    for (i = 0; i < prize.length; i++) {
+                        player_2.stack.push(prize[i])
+                        if (player_1.stack.length == 0) { gameOver = true }
+                    }
+                    war = false
+                } //else if tie, war remains true and the loop continues. No code needed here
+                //the array of prizes will populate until the war is over. c'mon. while loops can be neat.
+                if (player_1.stack.length == 0 || player_2.stack.length == 0) { gameOver = true }
+
+
+            }
+        }
+    }
+}
+gameOfWar(brandon, kendrick)
