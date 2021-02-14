@@ -81,10 +81,26 @@ const deck = new Deck(cardsInDeck, cardsInDeck.length)
 // populateDeck(deck)
 //console.log(deck)
 
+/** THE PLAYERS AND CARDS BELOW ARE CODED FOR TESTING THE WAR CODE ONLY
+const jasmineStack=[]
+const alexaStack=[]
+const jasmine = new Player('jasmine', jasmineStack, true )
+const alexa = new Player('alexa', alexaStack, true)
+let tieCard = new Card('Spades', 'Ace', 14, `ace of spades`)
+let tieBreakCard = new Card('Hearts', 2, 2, `2 of hearts`)
+for(let i = 0; i<10; i++){
+    jasmineStack.push(tieCard)
+    alexaStack.push(tieCard)
+}
+jasmineStack.push(tieBreakCard)
+alexaStack.push(tieBreakCard)
 
-
+//console.log(alexaStack)
+//console.log(jasmineStack)
+//gameOfWar(jasmine, alexa)
 // console.log(brandon.stack)
 // console.log(kendrick.stack)
+*/
 
 // syntax for removing a specific element from an array
 // let array = [0,1,2,3,4,5,6]
@@ -114,40 +130,45 @@ function gameOfWar(player_1, player_2) {
             alert(`The score is: ${player_1.name} has ${player_1.stack.length} card(s) and ${player_2.name} has ${player_2.stack.length} card(s)`)
             if (player_1.stack.length == 0) { gameOver = true }
         } else {
-            alert('WAR!')
+           
             // gameOver = true
             let war = true
             let prize = []
             while (war) {
+                 alert('WAR!')
+                 alert(`The score is: ${player_1.name} has ${player_1.stack.length} card(s) and ${player_2.name} has ${player_2.stack.length} card(s)`)
                 let p1hidden = player_1.stack[0] //gets a facedown card from player 1
                 prize.push(p1hidden) //puts that card in a new array
                 player_1.stack.shift()//removes that card from their stack
                 let p2hidden = player_2.stack[0]//repeats for player 2
                 prize.push(p2hidden)
-                player_1.stack.shift()
+                player_2.stack.shift()
+                if (player_1.stack.length == 0 || player_2.stack.length == 0) { gameOver = true; alert(`game over`); break }
                 let p1WarCard = player_1.stack[0]//gets player 1's war card
                 prize.push(p1WarCard)//puts it in the prize array
                 player_1.stack.shift()//removes it from their stack
                 let p2WarCard = player_2.stack[0]//repeats for player 2
                 prize.push(p2WarCard)
-                player_1.stack.shift()
+                player_2.stack.shift()
+                if (player_1.stack.length == 0 || player_2.stack.length == 0) { gameOver = true; alert(`game over`); break }
+                console.log(prize)
                 if (p1WarCard.score > p2WarCard.score) {
                     //p1 wins war
                     for (i = 0; i < prize.length; i++) {
                         player_1.stack.push(prize[i])
-                        if (player_2.stack.length == 0) { gameOver = true }
+                        if (player_2.stack.length == 0) { gameOver = true; alert(`game over`); break }
                     }
                     war = false
                 } else if (p2WarCard.score > p1WarCard.score) {
                     //p2 wins war
                     for (i = 0; i < prize.length; i++) {
                         player_2.stack.push(prize[i])
-                        if (player_1.stack.length == 0) { gameOver = true }
+                        if (player_1.stack.length == 0) { gameOver = true; alert(`game over`); break }
                     }
                     war = false
                 } //else if tie, war remains true and the loop continues. No code needed here
-                //the array of prizes will populate until the war is over. c'mon. while loops can be neat.
-                if (player_1.stack.length == 0 || player_2.stack.length == 0) { gameOver = true }
+                //the array of prizes will populate until the war is over. 
+                if (player_1.stack.length == 0 || player_2.stack.length == 0) { gameOver = true; alert(`game over`); break }
 
 
             }
