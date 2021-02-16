@@ -1,4 +1,4 @@
-# Game_Of_War
+# Game Of War
 
 This is Game of War. It is my second project from my time studying Software development at General Assembly. 
 
